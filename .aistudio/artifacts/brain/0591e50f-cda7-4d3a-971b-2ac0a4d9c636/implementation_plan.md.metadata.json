@@ -1,0 +1,6 @@
+{
+  "summary": "Implementation plan for Live GitHub API fetching without demo fallbacks, accompanied by Server-Sent Events (SSE) streaming for real-time animated stage-by-stage analysis progress.",
+  "updatedAt": "2026-10-17T07:53:27.397756770Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

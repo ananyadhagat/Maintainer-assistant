@@ -1,0 +1,6 @@
+{
+  "name": "Maintainer Copilot",
+  "description": "AI-powered open-source repository assistant for duplicate bug detection, incomplete issue screening, PR summarization, and review draft generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
