@@ -62,7 +62,7 @@ Always output pure valid JSON matching the requested structure with no surroundi
  * Universal Inference Adapter
  * Dispatches to either Google GenAI SDK or Local Ollama instance
  */
-async function executeInference(prompt: string, systemInstruction = INJECTION_GUARD_SYSTEM_INSTRUCTION): Promise<string> {
+export async function executeInference(prompt: string, systemInstruction = INJECTION_GUARD_SYSTEM_INSTRUCTION): Promise<string> {
   const modelId = getGemmaModel();
 
   if (store.aiProvider === 'ollama') {

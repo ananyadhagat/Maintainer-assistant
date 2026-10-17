@@ -40,8 +40,9 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, () => {
-    console.log(`Maintainer Copilot server running on http://localhost:${PORT}`);
+  const portNumber = Number(PORT) || 3000;
+  app.listen(portNumber, '0.0.0.0', () => {
+    console.log(`Maintainer Copilot server running on http://0.0.0.0:${portNumber}`);
   });
 }
 

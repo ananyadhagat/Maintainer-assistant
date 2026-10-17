@@ -12,11 +12,13 @@ import {
   Sparkles,
   ExternalLink,
   Github,
+  Network,
 } from 'lucide-react';
 import { RepositoryMetadata } from '../types';
 
 export type NavTab =
   | 'overview'
+  | 'architecture'
   | 'repository_analysis'
   | 'duplicate_detector'
   | 'bug_detective'
@@ -48,6 +50,13 @@ export function Sidebar({ currentTab, onSelectTab, activeRepo, counts, isDemo }:
     highlight?: boolean;
   }> = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    {
+      id: 'architecture',
+      label: 'Architecture Graph',
+      icon: Network,
+      highlight: true,
+      badge: 'React Flow',
+    },
     { id: 'repository_analysis', label: 'Repository Analysis', icon: GitBranch },
     {
       id: 'duplicate_detector',

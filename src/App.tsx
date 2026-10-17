@@ -22,6 +22,7 @@ import {
 import { Sidebar, NavTab } from './components/Sidebar';
 import { Header } from './components/Header';
 import { OverviewView } from './components/views/OverviewView';
+import { ArchitectureVisualizerView } from './components/views/architecture/ArchitectureVisualizerView';
 import { RepositoryAnalysisView } from './components/views/RepositoryAnalysisView';
 import { DuplicateDetectorView } from './components/views/DuplicateDetectorView';
 import { BugDetectiveView } from './components/views/BugDetectiveView';
@@ -289,6 +290,10 @@ export default function App() {
               onNavigate={setCurrentTab}
               onQuickBugCheck={() => setCurrentTab('bug_detective')}
             />
+          )}
+
+          {currentTab === 'architecture' && (
+            <ArchitectureVisualizerView />
           )}
 
           {currentTab === 'repository_analysis' && (

@@ -12,6 +12,7 @@ import {
   Clock,
   GitCommit,
   CheckCircle2,
+  Network,
 } from 'lucide-react';
 import { RepositoryAnalysisSummary, AnalysisHistoryItem } from '../../types';
 import { NavTab } from '../Sidebar';
@@ -66,6 +67,13 @@ export function OverviewView({ summary, history, onNavigate, onQuickBugCheck }: 
               <Bug className="w-4 h-4 text-zinc-300" />
               <span>Launch Bug Detective</span>
               <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </button>
+            <button
+              onClick={() => onNavigate('architecture')}
+              className="px-4 py-2 rounded-md bg-[#1e2332] hover:bg-[#272e42] text-indigo-300 text-xs font-semibold flex items-center gap-2 border border-indigo-500/30 transition cursor-pointer"
+            >
+              <Network className="w-4 h-4 text-indigo-400" />
+              <span>Architecture Visualizer</span>
             </button>
             <button
               onClick={() => onNavigate('duplicate_detector')}

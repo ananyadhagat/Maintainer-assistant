@@ -10,6 +10,11 @@ import {
   AnalysisHistoryItem,
   StreamStageId,
   StreamLog,
+  ArchitectureAnalysisResult,
+  ArchitectureNode,
+  ArchitectureEdge,
+  DiscoveredEndpoint,
+  ArchitectureViewMode,
 } from './types';
 
 function getHeaders(): HeadersInit {
@@ -271,4 +276,68 @@ export const api = {
     const res = await fetch('/api/analysis/history', { headers: getHeaders() });
     return res.json();
   },
+
+  // Architecture Visualizer API
+  async analyzeArchitecture(
+    url: string,
+    branch?: string,
+    forceDemo = false
+  ): Promise<ArchitectureAnalysisResult> {
+    const res = await fetch('/api/architecture/analyze', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ url, branch, forceDemo }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Architecture analysis failed' }));
+      throw new Error(err.error || `HTTP ${res.status}: ${res.statusText}`);
+    }
+    return res.json();
+  },
+
+  async getArchitectureAnalysis(analysisId: string): Promise<ArchitectureAnalysisResult> {
+    const res = await fetch(`/api/architecture/${encodeURIComponent(analysisId)}`, {
+      headers: getHeaders(),
+    });
+    if (!res.ok) throw new Error('Failed to load architecture analysis');
+    return res.json();
+  },
+
+  async getArchitectureGraph(
+    analysisId: string,
+    viewMode: ArchitectureViewMode = 'system'
+  ): Promise<{ nodes: ArchitectureNode[]; edges: ArchitectureEdge[] }> {
+    const res = await fetch(
+      `/api/architecture/${encodeURIComponent(analysisId)}/graph?viewMode=${viewMode}`,
+      { headers: getHeaders() }
+    );
+    if (!res.ok) throw new Error('Failed to load architecture graph');
+    return res.json();
+  },
+
+  async getArchitectureEndpoints(analysisId: string): Promise<{ endpoints: DiscoveredEndpoint[] }> {
+    const res = await fetch(`/api/architecture/${encodeURIComponent(analysisId)}/endpoints`, {
+      headers: getHeaders(),
+    });
+    if (!res.ok) throw new Error('Failed to load discovered endpoints');
+    return res.json();
+  },
+
+  async getSourceSnippet(
+    analysisId: string,
+    filePath: string,
+    startLine?: number,
+    endLine?: number
+  ): Promise<{ filePath: string; startLine: number; endLine: number; totalLines: number; content: string }> {
+    const params = new URLSearchParams({ file: filePath });
+    if (startLine) params.append('start', startLine.toString());
+    if (endLine) params.append('end', endLine.toString());
+
+    const res = await fetch(`/api/architecture/${encodeURIComponent(analysisId)}/source?${params.toString()}`, {
+      headers: getHeaders(),
+    });
+    if (!res.ok) throw new Error('Failed to fetch source snippet');
+    return res.json();
+  },
 };
+

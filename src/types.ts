@@ -282,3 +282,147 @@ export interface StreamProgressUpdate {
   status: 'in_progress' | 'completed' | 'failed';
   message: string;
 }
+
+// ============================================================
+// Repository Architecture Visualizer Types
+// ============================================================
+
+export type ArchitectureNodeType =
+  | 'client'
+  | 'frontend_page'
+  | 'frontend_component'
+  | 'api_endpoint'
+  | 'controller'
+  | 'service'
+  | 'database'
+  | 'external_api'
+  | 'auth_middleware'
+  | 'config'
+  | 'utility';
+
+export type ArchitectureLayer =
+  | 'client'
+  | 'frontend'
+  | 'api'
+  | 'controller'
+  | 'service'
+  | 'database'
+  | 'external'
+  | 'shared';
+
+export interface ArchitectureNodeData extends Record<string, unknown> {
+  id: string;
+  name: string;
+  label: string;
+  nodeType: ArchitectureNodeType;
+  layer: ArchitectureLayer;
+  filePath?: string;
+  lineRange?: [number, number];
+  summary?: string;
+  httpMethod?: string;
+  routePath?: string;
+  authRequired?: boolean;
+  packageOrModule?: string;
+  technologies?: string[];
+  calls?: string[];
+  imports?: string[];
+  downstreamCount?: number;
+  upstreamCount?: number;
+  isHighlighted?: boolean;
+  isTraced?: boolean;
+  isDimmed?: boolean;
+}
+
+export interface ArchitectureNode {
+  id: string;
+  type: string;
+  position: { x: number; y: number };
+  data: ArchitectureNodeData;
+}
+
+export type ArchitectureRelationshipType =
+  | 'calls'
+  | 'renders'
+  | 'imports'
+  | 'handles'
+  | 'queries'
+  | 'protects'
+  | 'integrates'
+  | 'configures'
+  | 'depends_on';
+
+export interface ArchitectureEdgeData extends Record<string, unknown> {
+  id: string;
+  source: string;
+  target: string;
+  relationshipType: ArchitectureRelationshipType;
+  confidence: 'verified' | 'inferred';
+  evidence: string;
+  label?: string;
+  httpMethod?: string;
+  routePath?: string;
+  isHighlighted?: boolean;
+  isTraced?: boolean;
+  isDimmed?: boolean;
+}
+
+export interface ArchitectureEdge {
+  id: string;
+  source: string;
+  target: string;
+  type?: string;
+  label?: string;
+  animated?: boolean;
+  style?: Record<string, any>;
+  relationshipType?: ArchitectureRelationshipType;
+  confidence?: 'verified' | 'inferred';
+  evidence?: string;
+  httpMethod?: string;
+  routePath?: string;
+  data?: ArchitectureEdgeData;
+}
+
+export interface DiscoveredEndpoint {
+  id: string;
+  method: string;
+  path: string;
+  filePath: string;
+  lineRange?: [number, number];
+  handlerName: string;
+  controllerName?: string;
+  authRequired: boolean;
+  authMiddleware?: string;
+  servicesCalled: string[];
+  modelsAccessed: string[];
+  externalApis: string[];
+  callersFrontend: string[];
+  nodeId: string;
+  description?: string;
+}
+
+export type ArchitectureViewMode = 'system' | 'api_flow' | 'feature_dep';
+
+export interface ArchitectureAnalysisResult {
+  id: string;
+  repo: RepositoryMetadata;
+  branch: string;
+  analyzedAt: string;
+  detectedLanguages: string[];
+  frameworks: string[];
+  totalFilesScanned: number;
+  nodes: ArchitectureNode[];
+  edges: ArchitectureEdge[];
+  endpoints: DiscoveredEndpoint[];
+  systemOverview: {
+    summary: string;
+    primaryArchitecturePattern: string;
+    keyStrengths: string[];
+    potentialRisks: string[];
+  };
+  isPartial: boolean;
+  isDemo: boolean;
+  aiEnhanced: boolean;
+  modelUsed?: string;
+  warnings: string[];
+}
+
